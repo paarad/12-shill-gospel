@@ -68,9 +68,10 @@ Return ONLY JSON with shape: { "tweets": string[], "disclaimer": string, "cardMe
     };
 
     return NextResponse.json(safe);
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: 'AI generation failed', detail: error?.message },
+      { error: 'AI generation failed', detail: errorMessage },
       { status: 500 }
     );
   }

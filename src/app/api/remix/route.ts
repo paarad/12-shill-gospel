@@ -3,6 +3,15 @@ import { redact } from '@/lib/redactor';
 
 export const runtime = 'edge';
 
+interface RemixResponse {
+  tweets: string[];
+  disclaimer: string;
+  cardMeta: {
+    title: string;
+    bullets: string[];
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { input, thread } = await req.json();
@@ -38,7 +47,7 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     const content = data.choices?.[0]?.message?.content || '';
 
-    let json: any;
+    let json: RemixResponse;
     try {
       json = JSON.parse(content);
     } catch {
@@ -57,7 +66,8 @@ export async function POST(req: NextRequest) {
     };
 
     return NextResponse.json(safe);
-  } catch (e: any) {
-    return NextResponse.json({ error: 'Remix failed', detail: e?.message }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: 'Remix failed', detail: errorMessage }, { status: 500 });
   }
 }

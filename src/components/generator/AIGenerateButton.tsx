@@ -23,9 +23,10 @@ export function AIGenerateButton() {
       const data = await res.json();
       setThread(data);
       setError(null);
-    } catch (e: any) {
-      setError(e?.message || "AI generation failed");
-      console.error("AI generation failed", e);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "AI generation failed";
+      setError(errorMessage);
+      console.error("AI generation failed", error);
     } finally {
       setIsGenerating(false);
     }

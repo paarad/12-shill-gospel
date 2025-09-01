@@ -8,7 +8,7 @@ export const PumpInputSchema = z.object({
   intensity: z.number().int().min(0).max(11),
   length: z.union([z.literal(5), z.literal(8), z.literal(12)]).default(8),
   redFlags: z.array(z.enum(["fake_partnerships","chart_zoom","audited_pending","team_doxxed"]))
-}).superRefine((v, _ctx) => {
+}).superRefine((v) => {
   if (v.mode === "tweet" && typeof v.length !== "undefined") {
     // length is ignored in tweet mode; keep for compatibility
   }

@@ -22,9 +22,10 @@ export function RemixButton() {
       }
       const data = await res.json();
       setThread(data);
-    } catch (e: any) {
-      setRemixError(e?.message || "Remix failed");
-      console.error("Remix failed", e);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Remix failed";
+      setRemixError(errorMessage);
+      console.error("Remix failed", error);
     } finally {
       setIsRemixing(false);
     }
