@@ -5,11 +5,11 @@ import { Label } from "@/components/ui/label";
 import { usePumpStore } from "@/store/usePumpStore";
 
 const copeLabels = [
-  "😐 Plausible",
-  "😏 Spicy", 
-  "🤪 Degen",
-  "🔥 Smoke & Mirrors",
-  "💀 Full Lies"
+  "Plausible",
+  "Spicy", 
+  "Degen",
+  "Smoke & Mirrors",
+  "Full Lies"
 ];
 
 const copeRanges = [0, 3, 6, 9, 11];
