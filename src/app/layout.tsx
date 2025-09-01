@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "ShillGospel",
   description: "Daily sermons of pure hopium — satire generator",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
