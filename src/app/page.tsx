@@ -15,37 +15,48 @@ import { AsciiChart } from "@/components/preview/AsciiChart";
 
 export default function Page() {
   return (
-    <main className="container mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>ShillGospel — Daily sermons of pure hopium</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <ModeToggle />
-          <PersonaSelect />
-          <NarrativePills />
-          <TickerInput />
-          <CopeSlider />
-          <LengthRadio />
-          <FlagToggles />
-          <SpinButton />
-          <CopyButtons />
-          <ExportButton />
-        </CardContent>
-      </Card>
+    <div className="min-h-screen px-6 py-8 md:px-10 md:py-12">
+      <section className="py-10 md:py-12 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">ShillGospel — Daily sermons of pure hopium.</h1>
+        <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">Twist the Cope Dial™ from plausible to full lies</p>
+      </section>
 
-      <div className="space-y-6">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <Card>
           <CardHeader>
-            <CardTitle>Preview</CardTitle>
+            <CardTitle>Controls</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Thread />
+          <CardContent className="space-y-6">
+            <ModeToggle />
+            <PersonaSelect />
+            <NarrativePills />
+            <TickerInput />
+            <CopeSlider />
+            <LengthRadio />
+            <FlagToggles />
+            <SpinButton />
+            <CopyButtons />
+            <ExportButton />
           </CardContent>
         </Card>
-        <SummaryCard />
-        <AsciiChart />
-      </div>
-    </main>
+
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Preview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Thread />
+            </CardContent>
+          </Card>
+          <SummaryCard />
+          <AsciiChart />
+        </div>
+      </section>
+
+      <footer className="mt-16 text-center text-xs text-muted-foreground">
+        Satire tool. Don&apos;t build a personality cult, build something cool.
+      </footer>
+    </div>
   );
 }
