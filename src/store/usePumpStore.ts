@@ -11,12 +11,17 @@ interface PumpStore {
   // UI state
   isGenerating: boolean;
   exportStatus: 'idle' | 'exporting' | 'success' | 'error';
+  // Remix state
+  isRemixing: boolean;
+  remixError: string | null;
   
   // Actions
   updateInput: (updates: Partial<PumpInput>) => void;
   setThread: (thread: Thread) => void;
   setIsGenerating: (loading: boolean) => void;
   setExportStatus: (status: 'idle' | 'exporting' | 'success' | 'error') => void;
+  setIsRemixing: (loading: boolean) => void;
+  setRemixError: (error: string | null) => void;
   reset: () => void;
 }
 
@@ -36,6 +41,9 @@ export const usePumpStore = create<PumpStore>((set) => ({
   thread: null,
   isGenerating: false,
   exportStatus: 'idle',
+  // Remix state
+  isRemixing: false,
+  remixError: null,
   
   updateInput: (updates) => set((state) => ({
     input: { ...state.input, ...updates }
@@ -47,10 +55,16 @@ export const usePumpStore = create<PumpStore>((set) => ({
   
   setExportStatus: (exportStatus) => set({ exportStatus }),
   
+  setIsRemixing: (isRemixing) => set({ isRemixing }),
+  
+  setRemixError: (remixError) => set({ remixError }),
+  
   reset: () => set({
     input: defaultInput,
     thread: null,
     isGenerating: false,
-    exportStatus: 'idle'
+    exportStatus: 'idle',
+    isRemixing: false,
+    remixError: null
   })
 }));

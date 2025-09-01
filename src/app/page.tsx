@@ -11,7 +11,9 @@ import { ExportButton } from "@/components/generator/ExportButton";
 import { SpinButton } from "@/components/generator/SpinButton";
 import { Thread } from "@/components/preview/Thread";
 import { SummaryCard } from "@/components/preview/SummaryCard";
-import { AsciiChart } from "@/components/preview/AsciiChart";
+import { RemixButton } from "@/components/generator/RemixButton";
+import { AIGenerateButton } from "@/components/generator/AIGenerateButton";
+
 
 export default function Page() {
   return (
@@ -35,8 +37,8 @@ export default function Page() {
             <LengthRadio />
             <FlagToggles />
             <SpinButton />
+            <AIGenerateButton />
             <CopyButtons />
-            <ExportButton />
           </CardContent>
         </Card>
 
@@ -50,7 +52,10 @@ export default function Page() {
             </CardContent>
           </Card>
           <SummaryCard />
-          <AsciiChart />
+          <div className="max-w-md mx-auto space-y-2">
+            <ExportButton />
+            <RemixButton />
+          </div>
         </div>
       </section>
 

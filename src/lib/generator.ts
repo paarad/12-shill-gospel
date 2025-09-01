@@ -1,5 +1,5 @@
 import seedrandom from 'seedrandom';
-import { PumpInput, Thread, CopeKnobs, Libraries } from './types';
+import { PumpInput, Thread, CopeKnobs } from './types';
 import { hooks } from './templates/hooks';
 import { authority } from './templates/authority';
 import { chartLines } from './templates/chartLines';
@@ -33,7 +33,7 @@ function fill(template: string, input: PumpInput): string {
 // Compress multiple parts into a single tweet
 function compressToOneLiner(parts: string[], ctx: { k: CopeKnobs; input: PumpInput }): string {
   const hook = parts[0]?.replace(/^\d+\/\s*/, "") ?? "";
-  const payload = parts.find(p => /rotation|reclaim|partner|rev share|airdrop|listing|float|vacuum/i.test(p)) ?? parts[1] ?? "";
+  const payload = parts.find(p => /rotation|reclaim|partner|rev share|airdrop|listing|float|vacuum|audit|doxx/i.test(p)) ?? parts[1] ?? "";
   const cta = ctx.k.cta === "soft" ? "" : " • Like + RT 🔔";
   return `${hook} ${payload}${cta}`.trim();
 }
@@ -46,38 +46,58 @@ export function generateThread(input: PumpInput): Thread {
 
   const base: string[] = [];
   
-  // Add hook
+  // Hook
   base.push(fill(pick(hooks), input));
   
-  // Add authority based on persona
+  // Authority by persona
   base.push(fill(pick(authority[input.persona]), input));
   
-  // Add narrative frame
+  // Narrative frame
   base.push(fill(pick(narrativeFrames[input.narrative]), input));
   
-  // Add chart lines if red flag is set
+  // Chart lines if zoom flag
   if (input.redFlags.includes("chart_zoom")) {
-    base.push(fill(pick(chartLines), input));
+    base.push(`${k.chartCrop} view → ${fill(pick(chartLines), input)}`);
   }
   
-  // Add fake partnerships if allowed and red flag is set
+  // Fake partnerships if allowed
   if (k.allowFakePartners && input.redFlags.includes("fake_partnerships")) {
     const partnerText = k.partnersSoundSigned 
-      ? "Three tier-1s signed, top-3 auditor passed them without reading (alpha)."
-      : "Undisclosed partner under NDA.";
+      ? "Three tier‑1s 'signed' (satire)."
+      : "Undisclosed partner under NDA (satire).";
     base.push(partnerText);
   }
+
+  // Audited pending / Team doxxed flags
+  if (input.redFlags.includes("audited_pending")) {
+    base.push("Audit pending — results soon (satire).");
+  }
+  if (input.redFlags.includes("team_doxxed")) {
+    base.push("Team doxxed — redacted resumes, ex‑BigCo vibes (satire).");
+  }
   
-  // Add tokenomics
+  // Tokenomics and catalysts
   base.push(fill(pick(tokenomicsCope), input));
-  
-  // Add catalysts
   base.push(fill(pick(catalysts), input));
   
-  // Add CTA
+  // CTA
   base.push(fill(pick(ctas[k.cta]), input));
 
   const disclaimer = pick(disclaimers[k.disclaimerStyle]);
+
+  // Build card bullets with flags reflected
+  const flagBits: string[] = [];
+  if (input.redFlags.includes("audited_pending")) flagBits.push("Audit pending");
+  if (input.redFlags.includes("team_doxxed")) flagBits.push("Team doxxed");
+  if (input.redFlags.includes("fake_partnerships")) flagBits.push(k.partnersSoundSigned ? "Partners 'signed'" : "NDA partners");
+  const chartBullet = input.redFlags.includes("chart_zoom")
+    ? `Chart: ${k.chartCrop} crop`
+    : fill(pick(chartLines), input).replace(/{ticker}/g, input.ticker);
+  const metaBullets = [
+    fill(pick(catalysts), input).replace(/{ticker}/g, input.ticker),
+    chartBullet,
+    flagBits.length ? flagBits.join(" • ") : "Float tight • Squeeze setup",
+  ];
 
   if (input.mode === "tweet") {
     const one = compressToOneLiner(base, { k, input });
@@ -86,11 +106,7 @@ export function generateThread(input: PumpInput): Thread {
       disclaimer: `${disclaimer} — SATIRE / PARODY / NFA / DYOR`,
       cardMeta: { 
         title: `${input.ticker} — ${input.narrative} Play`, 
-        bullets: [
-          pick(catalysts).replace(/{ticker}/g, input.ticker),
-          pick(chartLines).replace(/{ticker}/g, input.ticker),
-          "Float tight • Squeeze setup"
-        ] 
+        bullets: metaBullets
       }
     };
   }
@@ -102,11 +118,7 @@ export function generateThread(input: PumpInput): Thread {
     disclaimer: `${disclaimer} — SATIRE / PARODY / NFA / DYOR`,
     cardMeta: { 
       title: `${input.ticker} — ${input.narrative} Play`, 
-      bullets: [
-        pick(catalysts).replace(/{ticker}/g, input.ticker),
-        pick(chartLines).replace(/{ticker}/g, input.ticker),
-        "Float tight • Squeeze setup"
-      ] 
+      bullets: metaBullets
     }
   };
 }

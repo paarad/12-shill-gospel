@@ -10,12 +10,7 @@ export function SummaryCard() {
   if (!thread) return null;
   
   return (
-    <Card id="export-card" className="relative w-full max-w-md mx-auto overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="rotate-[-20deg] text-4xl font-extrabold opacity-10 select-none">
-          SATIRE / PARODY / NFA
-        </div>
-      </div>
+    <Card id="export-card" className="w-full max-w-md mx-auto overflow-hidden">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-bold">
@@ -34,11 +29,6 @@ export function SummaryCard() {
               <span className="text-sm">{bullet}</span>
             </div>
           ))}
-        </div>
-        <div className="pt-3 border-t">
-          <div className="text-xs text-muted-foreground text-center">
-            SATIRE / PARODY / NFA
-          </div>
         </div>
       </CardContent>
     </Card>

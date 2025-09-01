@@ -19,10 +19,22 @@ export function ExportButton() {
       const element = document.getElementById("export-card");
       if (!element) throw new Error("Export element not found");
       
+      const rect = element.getBoundingClientRect();
+      const ratio = 3; // higher quality
+      
       const dataUrl = await toPng(element, {
-        quality: 1,
-        pixelRatio: 2,
-        backgroundColor: "#ffffff"
+        pixelRatio: ratio,
+        width: Math.ceil(rect.width),
+        height: Math.ceil(rect.height),
+        canvasWidth: Math.ceil(rect.width * ratio),
+        canvasHeight: Math.ceil(rect.height * ratio),
+        style: {
+          margin: '0',
+          padding: '0',
+          background: '#ffffff'
+        },
+        cacheBust: true,
+        backgroundColor: '#ffffff'
       });
       
       const link = document.createElement("a");
